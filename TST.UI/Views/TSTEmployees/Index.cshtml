@@ -1,0 +1,129 @@
+﻿@model IEnumerable<TST.Data.TSTEmployee>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpFname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpLname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpAdd1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpAdd2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Area)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Town_City)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PostCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNbr)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DOB)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateOfHire)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateOfSeparation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Image)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Notes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TSTDepartment.DeptName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TSTEmpStatu.EmpStatName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpFname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpLname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpAdd1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpAdd2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Area)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Town_City)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PostCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhoneNbr)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DOB)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateOfHire)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateOfSeparation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Image)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Notes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TSTDepartment.DeptName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TSTEmpStatu.EmpStatName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.EmpID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.EmpID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.EmpID })
+        </td>
+    </tr>
+}
+
+</table>

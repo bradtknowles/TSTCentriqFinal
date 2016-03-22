@@ -1,0 +1,481 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TSTModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TSTDepartments">
+          <Key>
+            <PropertyRef Name="DeptID" />
+          </Key>
+          <Property Name="DeptID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeptName" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="DeptDescription" Type="nvarchar" MaxLength="150" />
+          <Property Name="DeptIsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TSTEmployee">
+          <Key>
+            <PropertyRef Name="EmpID" />
+          </Key>
+          <Property Name="EmpID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmpFname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EmpLname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DeptID" Type="int" Nullable="false" />
+          <Property Name="EmpStatID" Type="int" Nullable="false" />
+          <Property Name="EmpAdd1" Type="nvarchar" MaxLength="100" />
+          <Property Name="EmpAdd2" Type="nvarchar" MaxLength="25" />
+          <Property Name="Area" Type="nvarchar" MaxLength="50" />
+          <Property Name="Town/City" Type="nvarchar" MaxLength="25" />
+          <Property Name="PostCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="PhoneNbr" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="100" />
+          <Property Name="DOB" Type="smalldatetime" Nullable="false" />
+          <Property Name="DateOfHire" Type="smalldatetime" Nullable="false" />
+          <Property Name="DateOfSeparation" Type="smalldatetime" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Image" Type="nvarchar" MaxLength="100" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="TSTEmpStatus">
+          <Key>
+            <PropertyRef Name="EmpStatID" />
+          </Key>
+          <Property Name="EmpStatID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmpStatName" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmpStatDescription" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="TSTTechNotes">
+          <Key>
+            <PropertyRef Name="TechNotesID" />
+          </Key>
+          <Property Name="TechNotesID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TechID" Type="int" Nullable="false" />
+          <Property Name="TicketID" Type="int" />
+          <Property Name="TechNote" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="TechNoteDate" Type="smalldatetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TSTTickets">
+          <Key>
+            <PropertyRef Name="TicketID" />
+          </Key>
+          <Property Name="TicketID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Subject" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IssueDesc" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SubmitByID" Type="int" Nullable="false" />
+          <Property Name="TechID" Type="int" />
+          <Property Name="DateSubmit" Type="smalldatetime" Nullable="false" />
+          <Property Name="DateResolve" Type="smalldatetime" />
+          <Property Name="TicketStatusID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TSTTicketStatus">
+          <Key>
+            <PropertyRef Name="TicketStatusID" />
+          </Key>
+          <Property Name="TicketStatusID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TicketStatusName" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="TicketStatusDesc" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <Association Name="FK_TSTEmployee_TSTDepartments">
+          <End Role="TSTDepartments" Type="Self.TSTDepartments" Multiplicity="1" />
+          <End Role="TSTEmployee" Type="Self.TSTEmployee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TSTDepartments">
+              <PropertyRef Name="DeptID" />
+            </Principal>
+            <Dependent Role="TSTEmployee">
+              <PropertyRef Name="DeptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TSTEmployee_TSTEmpStatus">
+          <End Role="TSTEmpStatus" Type="Self.TSTEmpStatus" Multiplicity="1" />
+          <End Role="TSTEmployee" Type="Self.TSTEmployee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TSTEmpStatus">
+              <PropertyRef Name="EmpStatID" />
+            </Principal>
+            <Dependent Role="TSTEmployee">
+              <PropertyRef Name="EmpStatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TSTTechNotes_TSTTickets">
+          <End Role="TSTTickets" Type="Self.TSTTickets" Multiplicity="0..1" />
+          <End Role="TSTTechNotes" Type="Self.TSTTechNotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TSTTickets">
+              <PropertyRef Name="TicketID" />
+            </Principal>
+            <Dependent Role="TSTTechNotes">
+              <PropertyRef Name="TicketID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TSTTickets_TSTEmployee">
+          <End Role="TSTEmployee" Type="Self.TSTEmployee" Multiplicity="1" />
+          <End Role="TSTTickets" Type="Self.TSTTickets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TSTEmployee">
+              <PropertyRef Name="EmpID" />
+            </Principal>
+            <Dependent Role="TSTTickets">
+              <PropertyRef Name="SubmitByID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TSTTickets_TSTEmployee1">
+          <End Role="TSTEmployee" Type="Self.TSTEmployee" Multiplicity="0..1" />
+          <End Role="TSTTickets" Type="Self.TSTTickets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TSTEmployee">
+              <PropertyRef Name="EmpID" />
+            </Principal>
+            <Dependent Role="TSTTickets">
+              <PropertyRef Name="TechID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TSTTickets_TSTTicketStatus">
+          <End Role="TSTTicketStatus" Type="Self.TSTTicketStatus" Multiplicity="1" />
+          <End Role="TSTTickets" Type="Self.TSTTickets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TSTTicketStatus">
+              <PropertyRef Name="TicketStatusID" />
+            </Principal>
+            <Dependent Role="TSTTickets">
+              <PropertyRef Name="TicketStatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TSTModelStoreContainer">
+          <EntitySet Name="TSTDepartments" EntityType="Self.TSTDepartments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TSTEmployee" EntityType="Self.TSTEmployee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TSTEmpStatus" EntityType="Self.TSTEmpStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TSTTechNotes" EntityType="Self.TSTTechNotes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TSTTickets" EntityType="Self.TSTTickets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TSTTicketStatus" EntityType="Self.TSTTicketStatus" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TSTEmployee_TSTDepartments" Association="Self.FK_TSTEmployee_TSTDepartments">
+            <End Role="TSTDepartments" EntitySet="TSTDepartments" />
+            <End Role="TSTEmployee" EntitySet="TSTEmployee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TSTEmployee_TSTEmpStatus" Association="Self.FK_TSTEmployee_TSTEmpStatus">
+            <End Role="TSTEmpStatus" EntitySet="TSTEmpStatus" />
+            <End Role="TSTEmployee" EntitySet="TSTEmployee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TSTTechNotes_TSTTickets" Association="Self.FK_TSTTechNotes_TSTTickets">
+            <End Role="TSTTickets" EntitySet="TSTTickets" />
+            <End Role="TSTTechNotes" EntitySet="TSTTechNotes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TSTTickets_TSTEmployee" Association="Self.FK_TSTTickets_TSTEmployee">
+            <End Role="TSTEmployee" EntitySet="TSTEmployee" />
+            <End Role="TSTTickets" EntitySet="TSTTickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TSTTickets_TSTEmployee1" Association="Self.FK_TSTTickets_TSTEmployee1">
+            <End Role="TSTEmployee" EntitySet="TSTEmployee" />
+            <End Role="TSTTickets" EntitySet="TSTTickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TSTTickets_TSTTicketStatus" Association="Self.FK_TSTTickets_TSTTicketStatus">
+            <End Role="TSTTicketStatus" EntitySet="TSTTicketStatus" />
+            <End Role="TSTTickets" EntitySet="TSTTickets" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TSTModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TSTDepartment">
+          <Key>
+            <PropertyRef Name="DeptID" />
+          </Key>
+          <Property Name="DeptID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DeptName" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DeptDescription" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="DeptIsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="TSTEmployees" Relationship="Self.FK_TSTEmployee_TSTDepartments" FromRole="TSTDepartments" ToRole="TSTEmployee" />
+        </EntityType>
+        <EntityType Name="TSTEmployee">
+          <Key>
+            <PropertyRef Name="EmpID" />
+          </Key>
+          <Property Name="EmpID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmpFname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmpLname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DeptID" Type="Int32" Nullable="false" />
+          <Property Name="EmpStatID" Type="Int32" Nullable="false" />
+          <Property Name="EmpAdd1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EmpAdd2" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Area" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Town_City" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="PostCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNbr" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DOB" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DateOfHire" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DateOfSeparation" Type="DateTime" Precision="0" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Image" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TSTDepartment" Relationship="Self.FK_TSTEmployee_TSTDepartments" FromRole="TSTEmployee" ToRole="TSTDepartments" />
+          <NavigationProperty Name="TSTEmpStatu" Relationship="Self.FK_TSTEmployee_TSTEmpStatus" FromRole="TSTEmployee" ToRole="TSTEmpStatus" />
+          <NavigationProperty Name="TSTTickets" Relationship="Self.FK_TSTTickets_TSTEmployee" FromRole="TSTEmployee" ToRole="TSTTickets" />
+          <NavigationProperty Name="TSTTickets1" Relationship="Self.FK_TSTTickets_TSTEmployee1" FromRole="TSTEmployee" ToRole="TSTTickets" />
+        </EntityType>
+        <EntityType Name="TSTEmpStatu">
+          <Key>
+            <PropertyRef Name="EmpStatID" />
+          </Key>
+          <Property Name="EmpStatID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmpStatName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmpStatDescription" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TSTEmployees" Relationship="Self.FK_TSTEmployee_TSTEmpStatus" FromRole="TSTEmpStatus" ToRole="TSTEmployee" />
+        </EntityType>
+        <EntityType Name="TSTTechNote">
+          <Key>
+            <PropertyRef Name="TechNotesID" />
+          </Key>
+          <Property Name="TechNotesID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TechID" Type="Int32" Nullable="false" />
+          <Property Name="TicketID" Type="Int32" />
+          <Property Name="TechNote" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TechNoteDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="TSTTicket" Relationship="Self.FK_TSTTechNotes_TSTTickets" FromRole="TSTTechNotes" ToRole="TSTTickets" />
+        </EntityType>
+        <EntityType Name="TSTTicket">
+          <Key>
+            <PropertyRef Name="TicketID" />
+          </Key>
+          <Property Name="TicketID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Subject" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IssueDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SubmitByID" Type="Int32" Nullable="false" />
+          <Property Name="TechID" Type="Int32" />
+          <Property Name="DateSubmit" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DateResolve" Type="DateTime" Precision="0" />
+          <Property Name="TicketStatusID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TSTEmployee" Relationship="Self.FK_TSTTickets_TSTEmployee" FromRole="TSTTickets" ToRole="TSTEmployee" />
+          <NavigationProperty Name="TSTEmployee1" Relationship="Self.FK_TSTTickets_TSTEmployee1" FromRole="TSTTickets" ToRole="TSTEmployee" />
+          <NavigationProperty Name="TSTTechNotes" Relationship="Self.FK_TSTTechNotes_TSTTickets" FromRole="TSTTickets" ToRole="TSTTechNotes" />
+          <NavigationProperty Name="TSTTicketStatu" Relationship="Self.FK_TSTTickets_TSTTicketStatus" FromRole="TSTTickets" ToRole="TSTTicketStatus" />
+        </EntityType>
+        <EntityType Name="TSTTicketStatu">
+          <Key>
+            <PropertyRef Name="TicketStatusID" />
+          </Key>
+          <Property Name="TicketStatusID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TicketStatusName" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TicketStatusDesc" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TSTTickets" Relationship="Self.FK_TSTTickets_TSTTicketStatus" FromRole="TSTTicketStatus" ToRole="TSTTickets" />
+        </EntityType>
+        <Association Name="FK_TSTEmployee_TSTDepartments">
+          <End Role="TSTDepartments" Type="Self.TSTDepartment" Multiplicity="1" />
+          <End Role="TSTEmployee" Type="Self.TSTEmployee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TSTDepartments">
+              <PropertyRef Name="DeptID" />
+            </Principal>
+            <Dependent Role="TSTEmployee">
+              <PropertyRef Name="DeptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TSTEmployee_TSTEmpStatus">
+          <End Role="TSTEmpStatus" Type="Self.TSTEmpStatu" Multiplicity="1" />
+          <End Role="TSTEmployee" Type="Self.TSTEmployee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TSTEmpStatus">
+              <PropertyRef Name="EmpStatID" />
+            </Principal>
+            <Dependent Role="TSTEmployee">
+              <PropertyRef Name="EmpStatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TSTTickets_TSTEmployee">
+          <End Role="TSTEmployee" Type="Self.TSTEmployee" Multiplicity="1" />
+          <End Role="TSTTickets" Type="Self.TSTTicket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TSTEmployee">
+              <PropertyRef Name="EmpID" />
+            </Principal>
+            <Dependent Role="TSTTickets">
+              <PropertyRef Name="SubmitByID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TSTTickets_TSTEmployee1">
+          <End Role="TSTEmployee" Type="Self.TSTEmployee" Multiplicity="0..1" />
+          <End Role="TSTTickets" Type="Self.TSTTicket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TSTEmployee">
+              <PropertyRef Name="EmpID" />
+            </Principal>
+            <Dependent Role="TSTTickets">
+              <PropertyRef Name="TechID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TSTTechNotes_TSTTickets">
+          <End Role="TSTTickets" Type="Self.TSTTicket" Multiplicity="0..1" />
+          <End Role="TSTTechNotes" Type="Self.TSTTechNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TSTTickets">
+              <PropertyRef Name="TicketID" />
+            </Principal>
+            <Dependent Role="TSTTechNotes">
+              <PropertyRef Name="TicketID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TSTTickets_TSTTicketStatus">
+          <End Role="TSTTicketStatus" Type="Self.TSTTicketStatu" Multiplicity="1" />
+          <End Role="TSTTickets" Type="Self.TSTTicket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TSTTicketStatus">
+              <PropertyRef Name="TicketStatusID" />
+            </Principal>
+            <Dependent Role="TSTTickets">
+              <PropertyRef Name="TicketStatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TSTEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TSTDepartments" EntityType="Self.TSTDepartment" />
+          <EntitySet Name="TSTEmployees" EntityType="Self.TSTEmployee" />
+          <EntitySet Name="TSTEmpStatus" EntityType="Self.TSTEmpStatu" />
+          <EntitySet Name="TSTTechNotes" EntityType="Self.TSTTechNote" />
+          <EntitySet Name="TSTTickets" EntityType="Self.TSTTicket" />
+          <EntitySet Name="TSTTicketStatus" EntityType="Self.TSTTicketStatu" />
+          <AssociationSet Name="FK_TSTEmployee_TSTDepartments" Association="Self.FK_TSTEmployee_TSTDepartments">
+            <End Role="TSTDepartments" EntitySet="TSTDepartments" />
+            <End Role="TSTEmployee" EntitySet="TSTEmployees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TSTEmployee_TSTEmpStatus" Association="Self.FK_TSTEmployee_TSTEmpStatus">
+            <End Role="TSTEmpStatus" EntitySet="TSTEmpStatus" />
+            <End Role="TSTEmployee" EntitySet="TSTEmployees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TSTTickets_TSTEmployee" Association="Self.FK_TSTTickets_TSTEmployee">
+            <End Role="TSTEmployee" EntitySet="TSTEmployees" />
+            <End Role="TSTTickets" EntitySet="TSTTickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TSTTickets_TSTEmployee1" Association="Self.FK_TSTTickets_TSTEmployee1">
+            <End Role="TSTEmployee" EntitySet="TSTEmployees" />
+            <End Role="TSTTickets" EntitySet="TSTTickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TSTTechNotes_TSTTickets" Association="Self.FK_TSTTechNotes_TSTTickets">
+            <End Role="TSTTickets" EntitySet="TSTTickets" />
+            <End Role="TSTTechNotes" EntitySet="TSTTechNotes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TSTTickets_TSTTicketStatus" Association="Self.FK_TSTTickets_TSTTicketStatus">
+            <End Role="TSTTicketStatus" EntitySet="TSTTicketStatus" />
+            <End Role="TSTTickets" EntitySet="TSTTickets" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TSTModelStoreContainer" CdmEntityContainer="TSTEntities">
+          <EntitySetMapping Name="TSTDepartments">
+            <EntityTypeMapping TypeName="TSTModel.TSTDepartment">
+              <MappingFragment StoreEntitySet="TSTDepartments">
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+                <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+                <ScalarProperty Name="DeptDescription" ColumnName="DeptDescription" />
+                <ScalarProperty Name="DeptIsActive" ColumnName="DeptIsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TSTEmployees">
+            <EntityTypeMapping TypeName="TSTModel.TSTEmployee">
+              <MappingFragment StoreEntitySet="TSTEmployee">
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+                <ScalarProperty Name="EmpFname" ColumnName="EmpFname" />
+                <ScalarProperty Name="EmpLname" ColumnName="EmpLname" />
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+                <ScalarProperty Name="EmpStatID" ColumnName="EmpStatID" />
+                <ScalarProperty Name="EmpAdd1" ColumnName="EmpAdd1" />
+                <ScalarProperty Name="EmpAdd2" ColumnName="EmpAdd2" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="Town_City" ColumnName="Town/City" />
+                <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+                <ScalarProperty Name="PhoneNbr" ColumnName="PhoneNbr" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="DateOfHire" ColumnName="DateOfHire" />
+                <ScalarProperty Name="DateOfSeparation" ColumnName="DateOfSeparation" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TSTEmpStatus">
+            <EntityTypeMapping TypeName="TSTModel.TSTEmpStatu">
+              <MappingFragment StoreEntitySet="TSTEmpStatus">
+                <ScalarProperty Name="EmpStatID" ColumnName="EmpStatID" />
+                <ScalarProperty Name="EmpStatName" ColumnName="EmpStatName" />
+                <ScalarProperty Name="EmpStatDescription" ColumnName="EmpStatDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TSTTechNotes">
+            <EntityTypeMapping TypeName="TSTModel.TSTTechNote">
+              <MappingFragment StoreEntitySet="TSTTechNotes">
+                <ScalarProperty Name="TechNotesID" ColumnName="TechNotesID" />
+                <ScalarProperty Name="TechID" ColumnName="TechID" />
+                <ScalarProperty Name="TicketID" ColumnName="TicketID" />
+                <ScalarProperty Name="TechNote" ColumnName="TechNote" />
+                <ScalarProperty Name="TechNoteDate" ColumnName="TechNoteDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TSTTickets">
+            <EntityTypeMapping TypeName="TSTModel.TSTTicket">
+              <MappingFragment StoreEntitySet="TSTTickets">
+                <ScalarProperty Name="TicketID" ColumnName="TicketID" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="IssueDesc" ColumnName="IssueDesc" />
+                <ScalarProperty Name="SubmitByID" ColumnName="SubmitByID" />
+                <ScalarProperty Name="TechID" ColumnName="TechID" />
+                <ScalarProperty Name="DateSubmit" ColumnName="DateSubmit" />
+                <ScalarProperty Name="DateResolve" ColumnName="DateResolve" />
+                <ScalarProperty Name="TicketStatusID" ColumnName="TicketStatusID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TSTTicketStatus">
+            <EntityTypeMapping TypeName="TSTModel.TSTTicketStatu">
+              <MappingFragment StoreEntitySet="TSTTicketStatus">
+                <ScalarProperty Name="TicketStatusID" ColumnName="TicketStatusID" />
+                <ScalarProperty Name="TicketStatusName" ColumnName="TicketStatusName" />
+                <ScalarProperty Name="TicketStatusDesc" ColumnName="TicketStatusDesc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
